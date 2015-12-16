@@ -14,6 +14,11 @@ int margin = 24;
 int min_x = 19;
 int max_x = 200;
 int slice = (max_x - min_x) / 8 + 1;
+int value = 87;
+int new_x;
+int knobX0 = min_x;
+int knobX1 = min_x;
+int knobX2 = min_x;
 
 byte[] rs = { '1', '2', '3', '4', '5', '6', '7', '8' };
 byte[] gs = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
@@ -44,7 +49,7 @@ void draw() {
 void mouseDragged() {
   for (int i = 0; i < numSlider; i++) {
 	if (mouseInRect(knob_x[i], knob_y[i])) {
-      int new_x = knob_x[i] + mouseX - pmouseX;
+      new_x = knob_x[i] + mouseX - pmouseX;
       if (new_x > max_x) {
         knob_x[i] = max_x;
       } else {
@@ -70,6 +75,22 @@ void mouseDragged() {
   }
 }
 
+void serialEvent(Serial s) {
+  value = s.read();
+  switch (value) {
+    case 87: //W
+      knobX0 = knob_x[0];
+      knobX1 = knob_x[1];
+      knobX2 = knob_x[2];
+      break;
+    case 82: //R
+      knob_x[0] = knobX0;
+      knob_x[1] = knobX1;
+      knob_x[2] = knobX2;
+      break;
+  }
+  
+}
 boolean mouseInRect(int x, int y) {
   return mouseX >= x && mouseX <= x + knob.width && mouseY >= y && mouseY <= y + knob.height;
 }
