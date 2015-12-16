@@ -90,7 +90,7 @@ void serialEvent(Serial s) {
       saveStrings("nums.txt", lines);
       break;
     case 82: //R
-      b = loadBytes("nums.txt");
+      lines = loadstrings("nums.txt");
       knob_x[0] = knobX0;
       knob_x[1] = knobX1;
       knob_x[2] = knobX2;
