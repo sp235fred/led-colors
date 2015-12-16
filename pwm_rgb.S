@@ -53,25 +53,26 @@ doit:
 	sts		PCICR, r16
 	ldi		r16, (1<<PCINT20)
 	sts		PCMSK2, r16
-
+	ldi		r19, 0x00
+	ldi		r22, 0x00
 	ldi		r18, 0
 	ldi		r17, 3
-	call	EEPROM_read
+	call		EEPROM_read
 	cpi		r16, 23
-	brne	firsttime
+	brne		firsttime
 	ldi		r18, 0
 	ldi		r17, 0
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		red, r16
 	ldi		r18, 0
 	ldi		r17, 1
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		green, r16
 	ldi		r18, 0
 	ldi		r17, 2
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		blue, r16
-	rjmp	cont
+	rjmp		cont
 firsttime:
 	clr		r16
 	sts		red, r16
@@ -99,7 +100,68 @@ cont:
 	sbi		_SFR_IO_ADDR(DDRB), DDD2
 	sbi		_SFR_IO_ADDR(DDRB), DDD3
 	sei
-
+sendFirst:
+	lds		r16, red
+	ldi		r22, 0x00
+	ldi		r23, 0x00
+	sts		OCR1AL, r16
+	call		sendColor
+	lds		r16, green
+	ldi		r22, 0x00
+	ldi		r23, 0x01
+	sts		OCR1BL, r16
+	call		sendColor
+	lds		r16, blue
+	ldi		r22, 0x00
+	ldi		r23, 0x02
+	sts		OCR2A, r16
+	call		sendColor
+	cpi		r19, 0x00
+	breq		sendFirst
+	rjmp		forever
+sendColor:
+	cpi		r16, 1
+	breq		send0
+	inc		r22
+	cpi		r16, 3
+	breq		send0
+	inc		r22
+	cpi		r16, 7
+	breq		send0
+	inc		r22
+	cpi		r16, 15
+	breq		send0
+	inc		r22
+	cpi		r16, 31
+	breq		send0
+	inc		r22
+	cpi		r16, 61
+	breq		send0
+	inc		r22
+	cpi		r16, 127
+	breq		send0
+	inc		r22
+	cpi		r16, 255
+	breq		send0
+send0:
+	cpi		r23, 0x00
+	breq		sendRed
+	cpi		r23, 0x01
+	breq		sendGreen
+	ldi		r16, 65
+	add		r16, r22
+	call		USART_send
+	ret
+sendRed:
+	ldi		r16, 49
+	add		r16, r22
+	call		USART_send
+	ret
+sendGreen:
+	ldi		r16, 97
+	add		r16, r22
+	call		USART_send
+	ret
 forever:
 	lds		r16, red
 	sts		OCR1AL, r16
@@ -107,16 +169,23 @@ forever:
 	sts		OCR1BL, r16
 	lds		r16, blue
 	sts		OCR2A, r16
-	rjmp	forever
+	rjmp		forever
+
 
 	.global	USART_RX_vect
 USART_RX_vect:
 	in		r2, _SFR_IO_ADDR(SREG)
-	push	r2
+	push		r2
 	lds		r2, UDR0
-	call	store_color
+	lds		r24, UDR0
+	cpi		r24, '!'
+	breq		firstRecieved
+	call		store_color
 	pop		r2
 	out		_SFR_IO_ADDR(SREG), r2
+	reti
+firstRecieved:
+	inc		r19
 	reti
 
 	.global INT0_vect
@@ -129,19 +198,19 @@ pushed_1:
 	ldi		r18, 0
 	ldi		r17, 0
 	lds		r16, red
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r18, 0
 	ldi		r17, 1
 	lds		r16, green
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r18, 0
 	ldi		r17, 2
 	lds		r16, blue
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r18, 0
 	ldi		r17, 3
 	ldi		r16, 23
-	call	EEPROM_write
+	call		EEPROM_write
 notPushed_1:
 	pop		r2
 	out		_SFR_IO_ADDR(SREG), r2
@@ -156,15 +225,15 @@ PCINT2_vect:
 pushed_2:
 	ldi		r18, 0
 	ldi		r17, 0
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		red, r16
 	ldi		r18, 0
 	ldi		r17, 1
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		green, r16
 	ldi		r18, 0
 	ldi		r17, 2
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		blue, r16
 notPushed_2:
 	pop		r2
