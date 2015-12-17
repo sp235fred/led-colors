@@ -1,0 +1,4 @@
+	.global INT1_vect
+INT1_vect:
+	call	EEPROM_clearall
+	reti
