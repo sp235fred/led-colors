@@ -154,6 +154,33 @@ notPushed_1:
 	pop		r2
 	out		_SFR_IO_ADDR(SREG), r2
 	reti
+	
+	.global INT1_vect
+INT1_vect:
+	in	r2, _SFR_IO_ADDR(SREG)
+	push	r2
+	sbic	_SFR_IO_ADDR(PIND), PIND2
+	rjmp	notPushed_1
+	clr	r16
+pushed_1:
+	ldi		r17, 0
+	call	EEPROM_write
+	ldi		r17, 1
+	call	EEPROM_write
+	ldi		r17, 2
+	call	EEPROM_write
+	ldi		r17, 3
+	call	EEPROM_write
+   	inc      r18
+   	cpi      r18, 3
+   	breq     reset_1
+   	rjmp     notPushed_1
+reset_1:
+   	clr      r18
+notPushed_1:
+	pop		r2
+	out		_SFR_IO_ADDR(SREG), r2
+	reti
 
 	.global PCINT2_vect
 PCINT2_vect:
@@ -171,10 +198,10 @@ pushed_2:
 	ldi		r17, 2
 	call	EEPROM_read
 	sts		blue, r16
-   inc      r19
-   cpi      r19, 4
-   breq     reset_2
-   rjmp     notPushed_2
+   	inc      r19
+   	cpi      r19, 4
+   	breq     reset_2
+   	rjmp     notPushed_2
    
 reset_2:
    clr      r19   
