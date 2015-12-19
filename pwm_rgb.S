@@ -162,7 +162,7 @@ INT1_vect:
 	sbic	_SFR_IO_ADDR(PIND), PIND2
 	rjmp	notPushed_1
 	clr	r16
-pushed_1:
+pushed_clear:
 	ldi		r17, 0
 	call	EEPROM_write
 	ldi		r17, 1
@@ -173,11 +173,11 @@ pushed_1:
 	call	EEPROM_write
    	inc      r18
    	cpi      r18, 3
-   	breq     reset_1
-   	rjmp     notPushed_1
-reset_1:
+   	breq     reset_clear
+   	rjmp     notPushed_clear
+reset_clear:
    	clr      r18
-notPushed_1:
+notPushed_clear:
 	pop		r2
 	out		_SFR_IO_ADDR(SREG), r2
 	reti
