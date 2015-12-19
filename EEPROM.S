@@ -29,3 +29,5 @@ EEPROM_read:
 	call	   USART_send
 	lds		r16, EEDR
 	ret
+	
+	.end
