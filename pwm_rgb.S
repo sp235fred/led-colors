@@ -198,20 +198,40 @@ PCINT2_vect:
 	sbic	_SFR_IO_ADDR(PIND), PIND4
 	rjmp	notPushed_2
 pushed_2:
+	ldi		r17, 3
+	call		EEPROM_read
+	cpi		r16, 23
+	brne		loopit
 	ldi		r17, 0
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		red, r16
 	ldi		r17, 1
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		green, r16
 	ldi		r17, 2
-	call	EEPROM_read
+	call		EEPROM_read
 	sts		blue, r16
-   	inc      r19
-   	cpi      r19, 4
-   	breq     reset_2
-   	rjmp     notPushed_2
-   
+   	inc      	r19
+   	cpi      	r19, 4
+   	breq     	reset_2
+   	rjmp     	notPushed_2
+loopit:
+	ldi		r19, 0
+	ldi		r17, 0
+	call		EEPROM_read
+	sts		red, r16
+	ldi		r19, 0
+	ldi		r17, 1
+	call		EEPROM_read
+	sts		green, r16
+	ldi		r19, 0
+	ldi		r17, 2
+	call		EEPROM_read
+	sts		blue, r16
+	inc		r19
+	pop		r2
+	out		_SFR_IO_ADDR(SREG), r2
+	reti
 reset_2:
    clr      r19   
    
