@@ -42,12 +42,14 @@ blue:	.space	1, 0
 	.global doit
 doit:
 	cbi		_SFR_IO_ADDR(DDRD), DDD2
+	cbi		_SFR_IO_ADDR(DDRD), DDD3
 	cbi		_SFR_IO_ADDR(DDRD), DDD4
 	sbi		_SFR_IO_ADDR(PORTD), PORTD2
+	sbi		_SFR_IO_ADDR(PORTD), PORTD3
 	sbi		_SFR_IO_ADDR(PORTD), PORTD4
-	ldi		r16, (1<<ISC00)
+	ldi		r16, (1<<ISC00)|(1<<ISC10)
 	sts		EICRA, r16
-	ldi		r16, (1<<INT0)
+	ldi		r16, (1<<INT0)|(1<<INT1)
 	sts		EIMSK, r16
 	ldi		r16, (1<<PCIE2)
 	sts		PCICR, r16
@@ -132,23 +134,23 @@ INT0_vect:
 pushed_1:
 	ldi		r17, 0
 	lds		r16, red
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r17, 1
 	lds		r16, green
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r17, 2
 	lds		r16, blue
-	call	EEPROM_write
+	call		EEPROM_write
 	ldi		r17, 3
 	ldi		r16, 23
-	call	EEPROM_write
-   inc      r18
-   cpi      r18, 3
-   breq     reset_1
-   rjmp     notPushed_1
+	call		EEPROM_write
+   	inc      	r18
+   	cpi      	r18, 4
+   	breq     	reset_1
+   	rjmp     	notPushed_1
    
 reset_1:
-   clr      r18
+   	clr      	r18
    
 notPushed_1:
 	pop		r2
@@ -159,24 +161,31 @@ notPushed_1:
 INT1_vect:
 	in	r2, _SFR_IO_ADDR(SREG)
 	push	r2
-	sbic	_SFR_IO_ADDR(PIND), PIND2
-	rjmp	notPushed_1
-	clr	r16
+	sbic	_SFR_IO_ADDR(PIND), PIND3
+	rjmp	notPushed_clear
+	clr	r18
 pushed_clear:
+	ldi		r16, 0
 	ldi		r17, 0
 	call	EEPROM_write
+	ldi		r16, 0
 	ldi		r17, 1
 	call	EEPROM_write
+	ldi		r16, 0
 	ldi		r17, 2
 	call	EEPROM_write
+	ldi		r16, 0
 	ldi		r17, 3
 	call	EEPROM_write
    	inc      r18
-   	cpi      r18, 3
+   	cpi      r18, 4
    	breq     reset_clear
-   	rjmp     notPushed_clear
+   	rjmp     pushed_clear
 reset_clear:
-   	clr      r18
+   	clr     r18
+	sts	red, r18
+	sts	green, r18
+	sts	blue, r18
 notPushed_clear:
 	pop		r2
 	out		_SFR_IO_ADDR(SREG), r2
