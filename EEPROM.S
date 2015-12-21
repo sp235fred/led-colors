@@ -28,7 +28,7 @@ EEPROM_read:
 	ldi		r16, 'R'
 	call	   USART_send
 	lds		r16, EEDR
-	call		usart_send
+	call		USART_send
 	ret
 	
 	.end
