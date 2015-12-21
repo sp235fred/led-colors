@@ -107,27 +107,57 @@ void mouseDragged() {
 //}
 void serialEvent(Serial s) {
   value = s.read();
-  //setColor0(value);
-  if (y == 0) {
-   setColor0(value);
-  }
-  //if (y == 1) {
-  //  setColor1(value);
-  //}
-  //if (y == 2) {
-  //  setColor2(value);
-  //}
-  //if (y == 3) {
-  //  setColor3(value);
-  //}
   switch (value) {
+    case 87: 
+      if (y == 0) {
+      knobX0[0] = knob_x[0];
+      knobX1[0] = knob_x[1];
+      knobX2[0] = knob_x[2];
+  }
+  if (y == 1) {
+      knobX0[1] = knob_x[0];
+      knobX1[1] = knob_x[1];
+      knobX2[1] = knob_x[2];
+  }
+  if (y == 2) {
+      knobX0[2] = knob_x[0];
+      knobX1[2] = knob_x[1];
+      knobX2[2] = knob_x[2];
+  }
+  if (y == 3) {
+      knobX0[3] = knob_x[0];
+      knobX1[3] = knob_x[1];
+      knobX2[3] = knob_x[2];
+  }
+    break;
     case 82:
+    if (y == 0) {
     knob_x[0] = knobX0[0];
     knob_x[1] = knobX1[0];
     knob_x[2] = knobX2[0];
+    }
+    if (y == 1 ) {
+    knob_x[0] = knobX0[1];
+    knob_x[1] = knobX1[1];
+    knob_x[2] = knobX2[1];
+    }
+    if (y == 2 ) {
+    knob_x[0] = knobX0[2];
+    knob_x[1] = knobX1[2];
+    knob_x[2] = knobX2[2];
+    }
+    if (y == 3 ) {
+    knob_x[0] = knobX0[3];
+    knob_x[1] = knobX1[3];
+    knob_x[2] = knobX2[3];
+    }
     break;
   }
   println(value);
+  y++;
+  if ( y == 4) {
+    y = 0;
+  }
 }
 boolean mouseInRect(int x, int y) {
   return mouseX >= x && mouseX <= x + knob.width && mouseY >= y && mouseY <= y + knob.height;
@@ -137,9 +167,6 @@ void setColor0(int in) {
     switch (in) {
       case 1:
         knobX0[0] = knob_x[0];
-      break;
-      case 82: //R
-        knob_x[0] = knobX0[0];
       break;
       case 3:
        knobX0[0] = knob_x[0];
@@ -170,9 +197,6 @@ void setColor0(int in) {
       case 1:
         knobX1[0] = knob_x[1];
       break;
-      case 82: //R
-        knob_x[1] = knobX1[0];
-      break;
       case 3:
        knobX1[0] = knob_x[1];
       break;
@@ -202,9 +226,6 @@ void setColor0(int in) {
       case 1:
         knobX2[0] = knob_x[2];
       break;
-      case 82: //R
-        knob_x[2] = knobX2[0];
-      break;
       case 3:
        knobX2[0] = knob_x[2];
       break;
@@ -229,16 +250,12 @@ void setColor0(int in) {
     }
     x = -1;
   }
-  y = 1;
 }
 void setColor1(int in) {
   if(x == -1) {
     switch (in) {
       case 1:
         knobX0[1] = knob_x[0];
-      break;
-      case 82: //R
-        knob_x[0] = knobX0[1];
       break;
       case 3:
        knobX0[1] = knob_x[0];
@@ -269,9 +286,6 @@ void setColor1(int in) {
       case 1:
         knobX1[1] = knob_x[1];
       break;
-      case 82: //R
-        knob_x[1] = knobX1[1];
-      break;
       case 3:
        knobX1[1] = knob_x[1];
       break;
@@ -301,9 +315,6 @@ void setColor1(int in) {
       case 1:
         knobX2[1] = knob_x[2];
       break;
-      case 82: //R
-        knob_x[2] = knobX2[1];
-      break;
       case 3:
        knobX2[1] = knob_x[2];
       break;
@@ -328,16 +339,12 @@ void setColor1(int in) {
     }
     x = -1;
   }
-  y = 2;
 }
 void setColor2(int in) {
   if(x == -1) {
     switch (in) {
       case 1:
         knobX0[2] = knob_x[0];
-      break;
-      case 82: //R
-        knob_x[0] = knobX0[2];
       break;
       case 3:
        knobX0[2] = knob_x[0];
@@ -368,9 +375,6 @@ void setColor2(int in) {
       case 1:
         knobX1[2] = knob_x[1];
       break;
-      case 82: //R
-        knob_x[1] = knobX1[2];
-      break;
       case 3:
        knobX1[2] = knob_x[1];
       break;
@@ -400,9 +404,6 @@ void setColor2(int in) {
       case 1:
         knobX2[2] = knob_x[2];
       break;
-      case 82: //R
-        knob_x[2] = knobX2[2];
-      break;
       case 3:
        knobX2[2] = knob_x[2];
       break;
@@ -427,16 +428,12 @@ void setColor2(int in) {
     }
     x = -1;
   }
-  y = 3;
 }
 void setColor3(int in) {
   if(x == -1) {
     switch (in) {
       case 1:
         knobX0[3] = knob_x[0];
-      break;
-      case 82: //R
-        knob_x[0] = knobX0[3];
       break;
       case 3:
        knobX0[3] = knob_x[0];
@@ -467,9 +464,6 @@ void setColor3(int in) {
       case 1:
         knobX1[3] = knob_x[1];
       break;
-      case 82: //R
-        knob_x[1] = knobX1[3];
-      break;
       case 3:
        knobX1[3] = knob_x[1];
       break;
@@ -499,9 +493,6 @@ void setColor3(int in) {
       case 1:
         knobX2[3] = knob_x[2];
       break;
-      case 82: //R
-        knob_x[2] = knobX2[3];
-      break;
       case 3:
        knobX2[3] = knob_x[2];
       break;
@@ -526,5 +517,4 @@ void setColor3(int in) {
     }
     x = -1;
   }
-  y = 0;
 }
