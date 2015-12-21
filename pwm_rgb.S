@@ -145,7 +145,7 @@ pushed_1:
 	ldi		r16, 23
 	call		EEPROM_write
    	inc      	r18
-   	cpi      	r18, 4
+   	cpi      	r18, 5
    	breq     	reset_1
    	rjmp     	notPushed_1
    
@@ -212,7 +212,7 @@ pushed_2:
 	call		EEPROM_read
 	sts		blue, r16
    	inc      	r19
-   	cpi      	r19, 4
+   	cpi      	r19, 5
    	breq     	reset_2
    	rjmp     	notPushed_2
 loopit:
