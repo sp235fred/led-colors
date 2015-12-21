@@ -21,7 +21,7 @@ int knobX1[] = {min_x, min_x, min_x, min_x};
 int knobX2[] = {min_x, min_x, min_x, min_x};
 String[] b = {""};
 int x = -1;
-int y = 0;
+int y = 3;
 
 byte[] rs = { '1', '2', '3', '4', '5', '6', '7', '8' };
 byte[] gs = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
@@ -113,408 +113,61 @@ void serialEvent(Serial s) {
       knobX0[0] = knob_x[0];
       knobX1[0] = knob_x[1];
       knobX2[0] = knob_x[2];
+      y = 3;
   }
   if (y == 1) {
-      knobX0[1] = knob_x[0];
-      knobX1[1] = knob_x[1];
-      knobX2[1] = knob_x[2];
+     knobX0[1] = knob_x[0];
+     knobX1[1] = knob_x[1];
+     knobX2[1] = knob_x[2];
+     y--;
   }
   if (y == 2) {
-      knobX0[2] = knob_x[0];
-      knobX1[2] = knob_x[1];
-      knobX2[2] = knob_x[2];
+     knobX0[2] = knob_x[0];
+     knobX1[2] = knob_x[1];
+     knobX2[2] = knob_x[2];
+     y--;
   }
   if (y == 3) {
-      knobX0[3] = knob_x[0];
-      knobX1[3] = knob_x[1];
-      knobX2[3] = knob_x[2];
+     knobX0[3] = knob_x[0];
+     knobX1[3] = knob_x[1];
+     knobX2[3] = knob_x[2];
+     y--;
   }
-    break;
+   break;
     case 82:
     if (y == 0) {
     knob_x[0] = knobX0[0];
     knob_x[1] = knobX1[0];
     knob_x[2] = knobX2[0];
-    }
+    y = 3;
+     }
     if (y == 1 ) {
     knob_x[0] = knobX0[1];
     knob_x[1] = knobX1[1];
     knob_x[2] = knobX2[1];
+    y--;
     }
     if (y == 2 ) {
     knob_x[0] = knobX0[2];
     knob_x[1] = knobX1[2];
     knob_x[2] = knobX2[2];
+    y--;
     }
     if (y == 3 ) {
     knob_x[0] = knobX0[3];
     knob_x[1] = knobX1[3];
     knob_x[2] = knobX2[3];
+    y--;
     }
     break;
   }
   println(value);
-  y++;
-  if ( y == 4) {
-    y = 0;
-  }
 }
+  //y++;
+  //if ( y == 4) {
+  //  y = 0;
+  //}
+
 boolean mouseInRect(int x, int y) {
   return mouseX >= x && mouseX <= x + knob.width && mouseY >= y && mouseY <= y + knob.height;
-}
-void setColor0(int in) {
-  if(x == -1) {
-    switch (in) {
-      case 1:
-        knobX0[0] = knob_x[0];
-      break;
-      case 3:
-       knobX0[0] = knob_x[0];
-      break;
-      case 7:
-       knobX0[0] = knob_x[0];
-      break;
-      case 15:
-       knobX0[0] = knob_x[0];
-      break;
-      case 31:
-       knobX0[0] =knob_x[0];
-      break;
-      case 63:
-       knobX0[0] = knob_x[0];
-      break;
-      case 127:
-       knobX0[0] = knob_x[0];
-      break;
-      case 255:
-      knobX0[0] = knob_x[0];
-      break;
-    }
-    x++;
-  }
-    if(x == 0) {
-    switch (in) {
-      case 1:
-        knobX1[0] = knob_x[1];
-      break;
-      case 3:
-       knobX1[0] = knob_x[1];
-      break;
-      case 7:
-       knobX1[0] = knob_x[1];
-      break;
-      case 15:
-       knobX1[0] = knob_x[1];
-      break;
-      case 31:
-       knobX1[0] = knob_x[1];
-      break;
-      case 63:
-       knobX1[0] = knob_x[1];
-      break;
-      case 127:
-       knobX1[0] = knob_x[1];
-      break;
-      case 255:
-       knobX1[0] = knob_x[1];
-      break;
-    }
-    x++;
-  }
-  if (x == 1) {
-    switch (in) {
-      case 1:
-        knobX2[0] = knob_x[2];
-      break;
-      case 3:
-       knobX2[0] = knob_x[2];
-      break;
-      case 7:
-       knobX2[0] = knob_x[2];
-      break;
-      case 15:
-       knobX2[0] = knob_x[2];
-      break;
-      case 31:
-       knobX2[0] = knob_x[2];
-      break;
-      case 63:
-       knobX2[0] = knob_x[2];
-      break;
-      case 127:
-       knobX2[0] = knob_x[2];
-      break;
-      case 255:
-       knobX2[0] = knob_x[2];
-      break;
-    }
-    x = -1;
-  }
-}
-void setColor1(int in) {
-  if(x == -1) {
-    switch (in) {
-      case 1:
-        knobX0[1] = knob_x[0];
-      break;
-      case 3:
-       knobX0[1] = knob_x[0];
-      break;
-      case 7:
-       knobX0[1] = knob_x[0];
-      break;
-      case 15:
-       knobX0[1] = knob_x[0];
-      break;
-      case 31:
-       knobX0[1] =knob_x[0];
-      break;
-      case 63:
-       knobX0[1] = knob_x[0];
-      break;
-      case 127:
-       knobX0[1] = knob_x[0];
-      break;
-      case 255:
-      knobX0[1] = knob_x[0];
-      break;
-    }
-    x++;
-  }
-    if(x == 0) {
-    switch (in) {
-      case 1:
-        knobX1[1] = knob_x[1];
-      break;
-      case 3:
-       knobX1[1] = knob_x[1];
-      break;
-      case 7:
-       knobX1[1] = knob_x[1];
-      break;
-      case 15:
-       knobX1[1] = knob_x[1];
-      break;
-      case 31:
-       knobX1[1] = knob_x[1];
-      break;
-      case 63:
-       knobX1[1] = knob_x[1];
-      break;
-      case 127:
-       knobX1[1] = knob_x[1];
-      break;
-      case 255:
-       knobX1[1] = knob_x[1];
-      break;
-    }
-    x++;
-  }
-  if (x == 1) {
-    switch (in) {
-      case 1:
-        knobX2[1] = knob_x[2];
-      break;
-      case 3:
-       knobX2[1] = knob_x[2];
-      break;
-      case 7:
-       knobX2[1] = knob_x[2];
-      break;
-      case 15:
-       knobX2[1] = knob_x[2];
-      break;
-      case 31:
-       knobX2[1] = knob_x[2];
-      break;
-      case 63:
-       knobX2[1] = knob_x[2];
-      break;
-      case 127:
-       knobX2[1] = knob_x[2];
-      break;
-      case 255:
-       knobX2[1] = knob_x[2];
-      break;
-    }
-    x = -1;
-  }
-}
-void setColor2(int in) {
-  if(x == -1) {
-    switch (in) {
-      case 1:
-        knobX0[2] = knob_x[0];
-      break;
-      case 3:
-       knobX0[2] = knob_x[0];
-      break;
-      case 7:
-       knobX0[2] = knob_x[0];
-      break;
-      case 15:
-       knobX0[2] = knob_x[0];
-      break;
-      case 31:
-       knobX0[2] =knob_x[0];
-      break;
-      case 63:
-       knobX0[2] = knob_x[0];
-      break;
-      case 127:
-       knobX0[2] = knob_x[0];
-      break;
-      case 255:
-      knobX0[2] = knob_x[0];
-      break;
-    }
-    x++;
-  }
-    if(x == 0) {
-    switch (in) {
-      case 1:
-        knobX1[2] = knob_x[1];
-      break;
-      case 3:
-       knobX1[2] = knob_x[1];
-      break;
-      case 7:
-       knobX1[2] = knob_x[1];
-      break;
-      case 15:
-       knobX1[2] = knob_x[1];
-      break;
-      case 31:
-       knobX1[2] = knob_x[1];
-      break;
-      case 63:
-       knobX1[2] = knob_x[1];
-      break;
-      case 127:
-       knobX1[2] = knob_x[1];
-      break;
-      case 255:
-       knobX1[2] = knob_x[1];
-      break;
-    }
-    x++;
-  }
-  if (x == 1) {
-    switch (in) {
-      case 1:
-        knobX2[2] = knob_x[2];
-      break;
-      case 3:
-       knobX2[2] = knob_x[2];
-      break;
-      case 7:
-       knobX2[2] = knob_x[2];
-      break;
-      case 15:
-       knobX2[2] = knob_x[2];
-      break;
-      case 31:
-       knobX2[2] = knob_x[2];
-      break;
-      case 63:
-       knobX2[2] = knob_x[2];
-      break;
-      case 127:
-       knobX2[2] = knob_x[2];
-      break;
-      case 255:
-       knobX2[2] = knob_x[2];
-      break;
-    }
-    x = -1;
-  }
-}
-void setColor3(int in) {
-  if(x == -1) {
-    switch (in) {
-      case 1:
-        knobX0[3] = knob_x[0];
-      break;
-      case 3:
-       knobX0[3] = knob_x[0];
-      break;
-      case 7:
-       knobX0[3] = knob_x[0];
-      break;
-      case 15:
-       knobX0[3] = knob_x[0];
-      break;
-      case 31:
-       knobX0[3] =knob_x[0];
-      break;
-      case 63:
-       knobX0[3] = knob_x[0];
-      break;
-      case 127:
-       knobX0[3] = knob_x[0];
-      break;
-      case 255:
-      knobX0[3] = knob_x[0];
-      break;
-    }
-    x++;
-  }
-    if(x == 0) {
-    switch (in) {
-      case 1:
-        knobX1[3] = knob_x[1];
-      break;
-      case 3:
-       knobX1[3] = knob_x[1];
-      break;
-      case 7:
-       knobX1[3] = knob_x[1];
-      break;
-      case 15:
-       knobX1[3] = knob_x[1];
-      break;
-      case 31:
-       knobX1[3] = knob_x[1];
-      break;
-      case 63:
-       knobX1[3] = knob_x[1];
-      break;
-      case 127:
-       knobX1[3] = knob_x[1];
-      break;
-      case 255:
-       knobX1[3] = knob_x[1];
-      break;
-    }
-    x++;
-  }
-  if (x == 1) {
-    switch (in) {
-      case 1:
-        knobX2[3] = knob_x[2];
-      break;
-      case 3:
-       knobX2[3] = knob_x[2];
-      break;
-      case 7:
-       knobX2[3] = knob_x[2];
-      break;
-      case 15:
-       knobX2[3] = knob_x[2];
-      break;
-      case 31:
-       knobX2[3] = knob_x[2];
-      break;
-      case 63:
-       knobX2[3] = knob_x[2];
-      break;
-      case 127:
-       knobX2[3] = knob_x[2];
-      break;
-      case 255:
-       knobX2[3] = knob_x[2];
-      break;
-    }
-    x = -1;
-  }
 }
