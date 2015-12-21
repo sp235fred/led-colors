@@ -4,24 +4,25 @@ Serial sensor;
 
 PImage slider;
 PImage knob;
+String lines[] = {str(0), str(0), str(0)};
+PrintWriter output = createWriter("nums.txt");
+BufferedReader reader = createReader("nums.txt");
 
 int numSlider = 3;
 int[] slider_x = new int[numSlider];
 int[] slider_y = new int[numSlider];
 int[] knob_x = new int[numSlider];
 int[] knob_y = new int[numSlider];
+int recieve=0;
 int margin = 24;
 int min_x = 19;
 int max_x = 200;
 int slice = (max_x - min_x) / 8 + 1;
 int value = 87;
 int new_x;
-int knobX0[] = {min_x, min_x, min_x, min_x};
-int knobX1[] = {min_x, min_x, min_x, min_x};
-int knobX2[] = {min_x, min_x, min_x, min_x};
-String[] b = {""};
-int x = -1;
-int y = 3;
+int knobX0 = min_x;
+int knobX1 = min_x;
+int knobX2 = min_x;
 
 byte[] rs = { '1', '2', '3', '4', '5', '6', '7', '8' };
 byte[] gs = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
@@ -31,11 +32,15 @@ void setup() {
   size(256, 216);
   slider = loadImage("slider.png");
   knob = loadImage("knob.png");
-  b = loadStrings("nums.txt");
+  lines = loadStrings("nums.txt");
+  println(lines.length);
   for (int i = 0; i < numSlider; i++) {
     slider_x[i] = width / 2 - slider.width / 2;
     slider_y[i] = i * slider.height + margin;
-    knob_x[i] = parseInt(b[i]);
+    knob_x[i] = parseInt(lines[i]);
+    knobX0=parseInt(lines[0]);
+    knobX1=parseInt(lines[1]);
+    knobX2=parseInt(lines[2]);
     knob_y[i] = slider_y[i];
   }
   sensor = new Serial(this, Serial.list()[0], 9600);
@@ -79,95 +84,132 @@ void mouseDragged() {
   }
 }
 
-//void serialEvent(Serial s) {
-// value = s.read();
-// switch (value) {
-//   case 87: //W
-//     //knobX0 = knob_x[0];
-//     //knobX1 = knob_x[1];
-//     //knobX2 = knob_x[2];
-//     //String[] bytes = {Integer.toString(knobX0), Integer.toString(knobX1), Integer.toString(knobX2)};
-//     //saveStrings("nums.txt", bytes);
-//     break;
-//   case 82: //R
-//    // b = loadStrings("nums.txt");
-//     //knob_x[0] = knobX0;
-//     //knob_x[1] = knobX1;
-//     //knob_x[2] = knobX2;
-//     //knob_x[0] = parseInt(b[0]);
-//     //knob_x[1] = parseInt(b[1]);
-//     //knob_x[2] = parseInt(b[2]);
-//     break;
-//     case 1:
-//      //knob_x[0] = 0 * slice + min_x;
-//     break;
-// }
-// //println(value);
-  
-//}
 void serialEvent(Serial s) {
   value = s.read();
-  switch (value) {
-    case 87: 
-      if (y == 0) {
-      knobX0[0] = knob_x[0];
-      knobX1[0] = knob_x[1];
-      knobX2[0] = knob_x[2];
-      y = 3;
-  }
-  if (y == 1) {
-     knobX0[1] = knob_x[0];
-     knobX1[1] = knob_x[1];
-     knobX2[1] = knob_x[2];
-     y--;
-  }
-  if (y == 2) {
-     knobX0[2] = knob_x[0];
-     knobX1[2] = knob_x[1];
-     knobX2[2] = knob_x[2];
-     y--;
-  }
-  if (y == 3) {
-     knobX0[3] = knob_x[0];
-     knobX1[3] = knob_x[1];
-     knobX2[3] = knob_x[2];
-     y--;
-  }
-   break;
-    case 82:
-    if (y == 0) {
-    knob_x[0] = knobX0[0];
-    knob_x[1] = knobX1[0];
-    knob_x[2] = knobX2[0];
-    y = 3;
-     }
-    if (y == 1 ) {
-    knob_x[0] = knobX0[1];
-    knob_x[1] = knobX1[1];
-    knob_x[2] = knobX2[1];
-    y--;
-    }
-    if (y == 2 ) {
-    knob_x[0] = knobX0[2];
-    knob_x[1] = knobX1[2];
-    knob_x[2] = knobX2[2];
-    y--;
-    }
-    if (y == 3 ) {
-    knob_x[0] = knobX0[3];
-    knob_x[1] = knobX1[3];
-    knob_x[2] = knobX2[3];
-    y--;
-    }
-    break;
-  }
   println(value);
+  switch (value) {
+   /* case 87: //W
+      knobX0 = knob_x[0];
+      knobX1 = knob_x[1];
+      knobX2 = knob_x[2];
+      for (int i = 0 ; i < lines.length; i++) {
+         lines[i]=str(knob_x[i]);
+      }
+      saveStrings("nums.txt", lines);
+      break;*/
+    case 82:
+      recieve++;
+      break;
+    case 23:
+      recieve=0;
+      break;
+  }
+  println(recieve);
+  switch(recieve){
+    case 1:
+      switch(value) {
+        case 0:
+          knob_x[1]=0*slice+min_x;
+          break;
+        case 1:
+          knob_x[0]=0*slice+min_x;
+          break;
+        case 3:
+          knob_x[0]=1*slice+min_x;
+          break;
+        case 7:
+          knob_x[0]=2*slice+min_x;
+          break;
+        case 15:
+          knob_x[0]=3*slice+min_x;
+          break;
+        case 31:
+          knob_x[0]=4*slice+min_x;
+          break;
+        case 63:
+          knob_x[0]=5*slice+min_x;
+          break;
+        case 127:
+          knob_x[0]=6*slice+min_x;
+          break;
+        case 255:
+          knob_x[0]=7*slice+min_x;
+          break;
+      }
+      break;
+    case 2:
+      switch(value) {
+        case 0:
+          knob_x[1]=0*slice+min_x;
+          break;
+        case 1:
+          knob_x[1]=0*slice+min_x;
+          break;
+        case 3:
+          knob_x[1]=1*slice+min_x;
+          break;
+        case 7:
+          knob_x[1]=2*slice+min_x;
+          break;
+        case 15:
+          knob_x[1]=3*slice+min_x;
+          break;
+        case 31:
+          knob_x[1]=4*slice+min_x;
+          break;
+        case 63:
+          knob_x[1]=5*slice+min_x;
+          break;
+        case 127:
+          knob_x[1]=6*slice+min_x;
+          break;
+        case 255:
+          knob_x[1]=7*slice+min_x;
+          break;
+      }
+      break;
+    case 3:
+      switch(value) {
+        case 0:
+          knob_x[2]=0*slice+min_x;
+          recieve=0;
+          break;
+        case 1:
+          knob_x[2]=0*slice+min_x;
+      recieve=0;
+          break;
+        case 3:
+          knob_x[2]=1*slice+min_x;
+      recieve=0;
+          break;
+        case 7:
+          knob_x[2]=2*slice+min_x;
+      recieve=0;
+          break;
+        case 15:
+          knob_x[2]=3*slice+min_x;
+      recieve=0;
+          break;
+        case 31:
+          knob_x[2]=4*slice+min_x;
+      recieve=0;
+          break;
+        case 63:
+          knob_x[2]=5*slice+min_x;
+      recieve=0;
+          break;
+        case 127:
+          knob_x[2]=6*slice+min_x;
+      recieve=0;
+          break;
+        case 255:
+          knob_x[2]=7*slice+min_x;
+      recieve=0;
+          break;
+      }
+      break;
+  }
 }
-  //y++;
-  //if ( y == 4) {
-  //  y = 0;
-  //}
-
 boolean mouseInRect(int x, int y) {
   return mouseX >= x && mouseX <= x + knob.width && mouseY >= y && mouseY <= y + knob.height;
 }
